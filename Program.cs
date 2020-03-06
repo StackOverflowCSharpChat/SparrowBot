@@ -11,8 +11,7 @@ public class Program
 	private static async Task Init()
 	{
         // TODO Change login details, login url & roomURL to config file
-        //var auth = new EmailAuthenticationProvider("", "");
-        var auth = new EmailAuthenticationProvider("hello@kieranirving.co.uk", "BmOsVqEbMaxXRFTzDKd9");
+        var auth = new EmailAuthenticationProvider("", "");
 
         _ = auth.Login("stackoverflow.com");
 
