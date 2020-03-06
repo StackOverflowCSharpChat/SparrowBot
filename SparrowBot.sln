@@ -1,0 +1,31 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.29418.71
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SharpExchange", "SharpExchange\SharpExchange.csproj", "{7B65A1C9-DB5F-4292-BAEE-A572DDF6C6C0}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Chat", "Chat.csproj", "{A847B5EA-8E9D-4D6A-8424-879C2E1ED366}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{7B65A1C9-DB5F-4292-BAEE-A572DDF6C6C0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7B65A1C9-DB5F-4292-BAEE-A572DDF6C6C0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7B65A1C9-DB5F-4292-BAEE-A572DDF6C6C0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7B65A1C9-DB5F-4292-BAEE-A572DDF6C6C0}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A847B5EA-8E9D-4D6A-8424-879C2E1ED366}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A847B5EA-8E9D-4D6A-8424-879C2E1ED366}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A847B5EA-8E9D-4D6A-8424-879C2E1ED366}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A847B5EA-8E9D-4D6A-8424-879C2E1ED366}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {BE90895D-14BF-468A-8F5E-75DD4D2CEA0E}
+	EndGlobalSection
+EndGlobal

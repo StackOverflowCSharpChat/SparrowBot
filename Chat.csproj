@@ -1,0 +1,27 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>netcoreapp3.0</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Remove="SharpExchange\**" />
+    <EmbeddedResource Remove="SharpExchange\**" />
+    <None Remove="SharpExchange\**" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="SharpExchange\SharpExchange.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Update="commands.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="mindjail.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+
+</Project>
