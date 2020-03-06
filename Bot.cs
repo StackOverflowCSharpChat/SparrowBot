@@ -71,13 +71,13 @@ namespace Chat
             "ahoy",
             "avast",
         };
-        private static List<RoomModel> url = new List<RoomModel>()
+        private static readonly List<RoomModel> url = new List<RoomModel>()
         {
             new RoomModel() { roomid = 1, url = "https://chat.stackoverflow.com/rooms/1/sandbox",  },
             new RoomModel() { roomid = 7, url = "https://chat.stackoverflow.com/rooms/7/c" }
         };
 
-        private static TimeSpan oneBox = new TimeSpan(0, 0, 30);
+        private static TimeSpan oneBox = new TimeSpan(0, 2, 0);
 
         public static async Task init(EmailAuthenticationProvider auth)
         {
@@ -153,7 +153,7 @@ namespace Chat
 
                 bool opPriv = false;
                 User user = new User("stackoverflow.com", model.user_id);
-                if (user.IsModerator || user.Owns.ToList().Where(x => x.RoomId == 7).Count() != 0)
+                if (user.IsModerator || user.Owns.Any(x => x.RoomId == 7))
                     opPriv = true;
 
                 if (incomingMsg.StartsWith(usernameTL) || incomingMsg.StartsWith(cmdPhraseTL))
@@ -171,7 +171,7 @@ namespace Chat
                 var ass = _actionScheduler.FirstOrDefault(x => x.RoomId == model.room_id);
                 var roomWatcher = _roomWatcher.FirstOrDefault(x => x.RoomId == model.room_id);
 
-                var currentRoom = url.Where(x => x.roomid == model.room_id).FirstOrDefault();
+                var currentRoom = url.FirstOrDefault(x => x.roomid == model.room_id);
                 bool setTo = false; bool isSet = false;
 
                 if(opPriv)
@@ -190,7 +190,7 @@ namespace Chat
 
                 if (isSet)
                 {
-                    url.Where(x => x.roomid == currentRoom.roomid).FirstOrDefault().currentlyListening = setTo;
+	                url.FirstOrDefault(x => x.roomid == currentRoom.roomid).currentlyListening = setTo;
                     await Say($"I'm {(setTo ? "now" : "no longer")} listening for commands in this room", ass);
                     return;
                 }
@@ -238,7 +238,7 @@ namespace Chat
                                 await Say("That command be far too long", ass);
                             else
                             {
-                                if(_customCommands.Where(x => x.command.ToLower() == args[0].ToLower()).FirstOrDefault() == null)
+                                if(_customCommands.FirstOrDefault(x => x.command.ToLower() == args[0].ToLower()) == null)
                                 {
                                     incomingMsg = incomingMsg.Replace(args[0], "");
 
@@ -290,7 +290,7 @@ namespace Chat
                             }
                             else
                             {
-                                var command = _customCommands.Where(x => incomingMsg.EndsWith(x.command)).FirstOrDefault();
+                                var command = _customCommands.FirstOrDefault(x => incomingMsg.EndsWith((string) x.command));
                                 if (command != null)
                                 {
                                     string response = await ChatResponse(command.response);
@@ -333,17 +333,17 @@ namespace Chat
                     else if (incomingMsg.StartsWith("info"))
                     {
                         incomingMsg = originalIncomingMsg.Replace("info ", "", true, CultureInfo.CurrentCulture).Trim();
-                        var hardCommand = _hardCommands.Where(x => x == incomingMsg).FirstOrDefault();
+                        var hardCommand = _hardCommands.FirstOrDefault(x => x == incomingMsg);
                         if (hardCommand != null)
                         {
                             await Reply($"Command {incomingMsg}, Created when time first began", model.message_id, ass);
                         }
                         else
                         {
-                            var command = _customCommands.Where(x => x.command == incomingMsg).FirstOrDefault();
+                            var command = _customCommands.FirstOrDefault(x => x.command == incomingMsg);
                             if (command != null)
                             {
-                                await Reply($"Command {command.command}, Created by {command.createdBy} on {command.createdTime.ToString("dd-MM-yyyy")} at {command.createdTime.ToString("HH:mm")}", model.message_id, ass);
+                                await Reply($"Command {command.command}, Created by {command.createdBy} on {command.createdTime:dd-MM-yyyy} at {command.createdTime:HH:mm}", model.message_id, ass);
                             }
                             else await Reply($"There's no command called {incomingMsg}, Savvy?", model.message_id, ass);
                         }
@@ -351,10 +351,10 @@ namespace Chat
                     else if (incomingMsg.StartsWith("forget"))
                     {
                         incomingMsg = originalIncomingMsg.Replace("forget ", "", true, CultureInfo.CurrentCulture).Trim();
-                        var hardCommands = _hardCommands.Where(x => x.ToLower() == incomingMsg.ToLower()).FirstOrDefault();
+                        var hardCommands = _hardCommands.FirstOrDefault(x => x.ToLower() == incomingMsg.ToLower());
                         if (hardCommands == null)
                         {
-                            var command = _customCommands.Where(x => x.command.ToLower() == incomingMsg.ToLower()).FirstOrDefault();
+                            var command = _customCommands.FirstOrDefault(x => x.command.ToLower() == incomingMsg.ToLower());
                             if (command != null)
                             {
                                 if (command.createdById == model.user_id || opPriv)
@@ -373,8 +373,7 @@ namespace Chat
                         if(opPriv)
                         {
                             incomingMsg = originalIncomingMsg.Replace("ban", "", true, CultureInfo.CurrentCulture).Trim();
-                            int banUserId;
-                            if(int.TryParse(incomingMsg, out banUserId))
+                            if (int.TryParse(incomingMsg, out var banUserId))
                             {
                                 User banUser = new User("stackoverflow.com", banUserId);
                                 var banUserRoom = banUser.Owns.ToList().Where(x => x.RoomId == 7).FirstOrDefault();
@@ -394,10 +393,9 @@ namespace Chat
                         if (opPriv)
                         {
                             incomingMsg = originalIncomingMsg.Replace("unban", "", true, CultureInfo.CurrentCulture).Trim();
-                            int banUserId;
-                            if (int.TryParse(incomingMsg, out banUserId))
+                            if (int.TryParse(incomingMsg, out var banUserId))
                             {
-                                var banUser = _mindJail.Where(x => x.id == banUserId).FirstOrDefault();
+                                var banUser = _mindJail.FirstOrDefault(x => x.id == banUserId);
                                 if(banUser != null)
                                 {
                                     User bannedUser = new User("stackoverflow.com", banUserId);
@@ -412,7 +410,7 @@ namespace Chat
                     }
                     else
                     {
-                        var command = _customCommands.Where(x => x.command.ToLower() == incomingMsg.ToLower()).FirstOrDefault();
+                        var command = _customCommands.FirstOrDefault(x => x.command.ToLower() == incomingMsg.ToLower());
                         if (command != null)
                         {
                             string response = await ChatResponse(command.response);
@@ -516,7 +514,7 @@ namespace Chat
             if (backup)
                 await BackupCommands(commandJson, outputSave, ass);
 
-            Console.WriteLine($"Commands saved at {DateTime.Now.ToString("dd-MM-yyyy HH:mm")}");
+            Console.WriteLine($"Commands saved at {DateTime.Now:dd-MM-yyyy HH:mm}");
         }
 
         /// <summary>
@@ -527,7 +525,7 @@ namespace Chat
         /// <returns></returns>
         public static async Task BackupCommands(string commandJson, bool outputSave, ActionScheduler ass)
         {
-            File.WriteAllText($"{DateTime.Now.ToString("dd-MM-YYYY-HHmmss")}{commandsFile}", commandJson);
+            File.WriteAllText($"{DateTime.Now:dd-MM-YYYY-HHmmss}{commandsFile}", commandJson);
             if(outputSave)
                 await Say($"I've saved meself", ass);
         }
@@ -657,8 +655,7 @@ namespace Chat
             int index = random.Next(0, _shutUp.Count);
 
             string message = "";
-            if(user != null)
-                user = user.Replace(" ", "");
+            user = user?.Replace(" ", "");
             if (messageId > 0)
                 message = $":{messageId.ToString()} ";
             else if (!string.IsNullOrWhiteSpace(user))
