@@ -47,8 +47,12 @@ namespace Chat
             "Shut It!",
             "Quiet you!",
             "https://media1.giphy.com/media/KUOPgSNoKVcuQ/giphy.gif",
-            "https://media3.giphy.com/media/iHskdY9SMLFZuQ2u5c/giphy.gif",
-            "https://media3.giphy.com/media/LiRoVoHjMa5bO/giphy.gif"
+            "https://media.giphy.com/media/gswsH2I4U4u6Q/giphy.gif",
+            "https://media3.giphy.com/media/LiRoVoHjMa5bO/giphy.gif",
+            "https://i.giphy.com/media/l0HUbtILos6CdAtxu/giphy.gif",
+            "https://media.giphy.com/media/M8xmO5ZcLPtAY/giphy.gif",
+            "https://media.giphy.com/media/HFxsc1xXdUzcs/giphy.gif",
+
         };
         private static List<string> _hardCommands = new List<string>()
         {
