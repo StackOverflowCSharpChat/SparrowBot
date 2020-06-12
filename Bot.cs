@@ -641,7 +641,7 @@ namespace Chat
         public static async Task SayError(ActionScheduler ass, int messageId = 0)
         {
             Random random = new Random();
-            int index = random.Next(0, _errorResponse.Count);
+            int index = random.Next(0, _errorResponse.Count - 1);
 
             string message = "";
             if (messageId > 0)
@@ -659,7 +659,7 @@ namespace Chat
         public static async Task SayShutUp(ActionScheduler ass, int messageId = 0, string user = null)
         {
             Random random = new Random();
-            int index = random.Next(0, _shutUp.Count);
+            int index = random.Next(0, _shutUp.Count - 1);
 
             string message = "";
             user = user?.Replace(" ", "");
@@ -671,6 +671,7 @@ namespace Chat
             if(message.StartsWith("@"))
             {
                 List<string> replies = _shutUp.Where(x => !x.StartsWith("http")).ToList();
+                index = random.Next(0, replies.Count - 1);
                 await Say($"{message}{replies[index].ToString()}", ass);
             }
             else
