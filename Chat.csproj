@@ -12,6 +12,10 @@
   </ItemGroup>
 
   <ItemGroup>
+    <PackageReference Include="Microsoft.NETCore.App" Version="2.2.8" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="SharpExchange\SharpExchange.csproj" />
   </ItemGroup>
 

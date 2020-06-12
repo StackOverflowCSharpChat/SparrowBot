@@ -152,9 +152,16 @@ namespace Chat
                     return;
 
                 bool opPriv = false;
-                User user = new User("stackoverflow.com", model.user_id);
-                if (user.IsModerator || user.Owns.Any(x => x.RoomId == 7))
-                    opPriv = true;
+                try
+                {
+                    User user = new User("stackoverflow.com", model.user_id);
+                    if (user.IsModerator || user.Owns.Any(x => x.RoomId == 7))
+                        opPriv = true;
+                }
+                catch(Exception ex)
+                {
+                    Console.WriteLine($"Error fetching perms for {model.user_id}", ex);
+                }
 
                 if (incomingMsg.StartsWith(usernameTL) || incomingMsg.StartsWith(cmdPhraseTL))
                 {
@@ -207,7 +214,7 @@ namespace Chat
                 }
 
                 //Check if the user talking is in mind jail
-                var mindJailUser = _mindJail.FirstOrDefault(x => x.id == model.user_id);
+                var mindJailUser = _mindJail?.FirstOrDefault(x => x.id == model.user_id);
                 if (mindJailUser != null)
                 {
                     if(!mindJailUser.MindJailInform)
